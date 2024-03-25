@@ -3,6 +3,8 @@ package noekeon
 import (
     "fmt"
     "crypto/cipher"
+
+    "github.com/pedroalbanese/crypton/internal/subtle"
 )
 
 const BlockSize = 16
@@ -46,6 +48,10 @@ func (this *noekeonCipher) Encrypt(dst, src []byte) {
         panic("cryptobin/noekeon: output not full block")
     }
 
+    if subtle.InexactOverlap(dst[:BlockSize], src[:BlockSize]) {
+        panic("cryptobin/noekeon: invalid buffer overlap")
+    }
+
     encSrc := bytesToUint32s(src)
     encDst := make([]uint32, len(encSrc))
 
@@ -62,6 +68,10 @@ func (this *noekeonCipher) Decrypt(dst, src []byte) {
 
     if len(dst) < BlockSize {
         panic("cryptobin/noekeon: output not full block")
+    }
+
+    if subtle.InexactOverlap(dst[:BlockSize], src[:BlockSize]) {
+        panic("cryptobin/noekeon: invalid buffer overlap")
     }
 
     encSrc := bytesToUint32s(src)
