@@ -4,7 +4,7 @@ import (
     "fmt"
     "crypto/cipher"
 
-    "github.com/pedroalbanese/crypton/internal/subtle"
+    "github.com/pedroalbanese/noekeon/internal/subtle"
 )
 
 const BlockSize = 16
